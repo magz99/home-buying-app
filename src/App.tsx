@@ -6,7 +6,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from 'react-router-dom';
 import FinancialInformation from './views/financial-information';
 import MortgageCalculation from './views/mortgage-calculation';
@@ -43,6 +44,9 @@ function App() {
           </Route>
           <Route path="/property-map">
             <PropertyMap />
+          </Route>
+          <Route exact path="/">
+            <Redirect to="/financial-information" />
           </Route>
         </Switch>
     </div>
