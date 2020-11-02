@@ -20,11 +20,11 @@ function App() {
       <header className="App-header">
         <Container>
           <Row className="align-items-center">
-            <Col><div>Home Buying Helper 🏠</div></Col>
-            <Col xs={10}>
+            <Col><div><h1>Home Buying Helper&nbsp;🏠</h1></div></Col>
+            <Col xs={10} sm={9}>
               <nav>
                 <Container>
-                  <Row>
+                  <Row className="align-items-center">
                     <Col><Link to="/financial-information">Financial Information</Link></Col>
                     <Col><Link to="/mortgage-calculation">Mortgage Calculation</Link></Col>
                     <Col><Link to="/property-map">Property Map</Link></Col>
