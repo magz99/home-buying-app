@@ -2,6 +2,9 @@ import React from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import DebtRatios from '../components/debt-ratios';
 
+const MAX_GDS_RATIO = 0.39;
+// const MAX_TDS_RATIO = 0.44;
+
 type debtProps = {
     annualIncome: number;
     carPayment: number;
@@ -63,12 +66,16 @@ class FinancialInformation extends React.Component{
     
 
     handleCalculate() {
+
+        const calculatedGDSRatio = calculateGDS(this.state.annualIncome, this.state.propertyTax, this.state.heating, this.state.mortgagePayment);
+        const calculatedTDSRatio = calculateTDS(this.state.annualIncome, this.state.propertyTax, this.state.heating, this.state.mortgagePayment, this.state.carPayment, this.state.creditPayment);
+        const numGDSRatio = `${calculatedGDSRatio}`.substring(0,6);
+        const numTDSRatio = `${calculatedTDSRatio}`.substring(0,6);
+
         this.setState({
-            gdsRatio: calculateGDS(this.state.annualIncome, this.state.propertyTax, this.state.heating, this.state.mortgagePayment),
-            tdsRatio: calculateTDS(this.state.annualIncome, this.state.propertyTax, this.state.heating, this.state.mortgagePayment, this.state.carPayment, this.state.creditPayment)
-        });
-        this.setState({
-            maxMortage: calculateMaxMortgage(this.state.annualIncome, this.state.gdsRatio, this.state.propertyTax, this.state.heating)
+            gdsRatio: (parseFloat(numGDSRatio)*100).toPrecision(4),
+            tdsRatio: (parseFloat(numTDSRatio)*100).toPrecision(4),
+            maxMortgage: calculateMaxMortgage(this.state.annualIncome, MAX_GDS_RATIO, this.state.propertyTax, this.state.heating)
         });
     };
 
@@ -79,7 +86,8 @@ class FinancialInformation extends React.Component{
                     <Col><h2 className="h4">Household Financial Information</h2></Col>
                 </Row>
                 <Row className="mb-4">
-                    <Col>
+                    <Col sm="12">
+                        <h3 className="h5 mt-3">Household Income</h3>
                         <label htmlFor="annualIncome" className="w-100">
                             <span className="d-block mb-1">Annual Gross Income (before tax)</span>
                             <input name="annualIncome" type="text" placeholder="Enter a value" value={this.state.annualIncome} onChange={this.handleInputChange}/>
@@ -108,8 +116,8 @@ class FinancialInformation extends React.Component{
                             <input name="mortgagePayment" type="text" placeholder="Enter a value" value={this.state.mortgagePayment}  onChange={this.handleInputChange}/>
                         </label>
                     </Col>
-                    <Col><Button className="mt-2" variant="primary" onClick={this.handleCalculate}>Calculate Debt Ratios</Button></Col>
-                    <Col>
+                    <Col sm="12"><Button className="mt-5 my-sm-4" variant="primary" onClick={this.handleCalculate}>Calculate Debt Ratios</Button></Col>
+                    <Col sm="12">
                         <DebtRatios gdsRatio={this.state.gdsRatio} tdsRatio={this.state.tdsRatio} maxMortgage={this.state.maxMortgage} />
                     </Col>
                 </Row>
