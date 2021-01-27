@@ -1,6 +1,11 @@
 import React from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
 import DebtRatios from '../components/debt-ratios';
+import {
+    calculateGDS,
+    calculateTDS,
+    calculateMaxMortgage
+} from '../utils/ratio-helpers';
 
 const MAX_GDS_RATIO = 0.39;
 // const MAX_TDS_RATIO = 0.44;
@@ -17,20 +22,6 @@ type debtProps = {
     tdsRatio: number;
     maxMortgage: number;
 };
-
-const calculateGDS = (annualIncome: number, propertyTax:number, heating:number, mortgagePayment:number): number=>{
-    return ((propertyTax + heating + mortgagePayment) * 12) / annualIncome;
-};
-
-const calculateTDS = (annualIncome:number, propertyTax:number, heating:number, mortgagePayment:number, carPayment:number, creditPayment:number):number =>{
-    return ((propertyTax + heating + mortgagePayment + carPayment + creditPayment) * 12) / annualIncome;
-};
-
-const calculateMaxMortgage = (annualIncome:number, gdsRatio:number, propertyTax:number, heating:number): number =>{
-    return ((annualIncome * gdsRatio / 12)) - propertyTax - heating;
-};
-
-
 
 class FinancialInformation extends React.Component{
    
@@ -90,22 +81,22 @@ class FinancialInformation extends React.Component{
                         <h3 className="h5 mt-3">Household Income</h3>
                         <label htmlFor="annualIncome" className="w-100">
                             <span className="d-block mb-1">Annual Gross Income (before tax)</span>
-                            <input name="annualIncome" type="text" placeholder="Enter a value" value={this.state.annualIncome} onChange={this.handleInputChange}/>
+                            $<input name="annualIncome" type="text" placeholder="Enter a value" value={this.state.annualIncome} onChange={this.handleInputChange}/>
                         </label>
                         <h3 className="h5 mt-3">Household Debts/Expenses</h3>
                         <label className="w-100 ">
                             <span className="d-block mb-1">Monthly Car Payment</span>
-                            <input name="carPayment" type="text" placeholder="Enter a value" value={this.state.carPayment} onChange={this.handleInputChange}/>
+                            $<input name="carPayment" type="text" placeholder="Enter a value" value={this.state.carPayment} onChange={this.handleInputChange}/>
                         </label>
                         <label className="w-100">
                             <span className="d-block mb-1">Monthly Credit Card Payments</span>
-                            <input name="creditPayment" type="text" placeholder="Enter a value" value={this.state.creditPayment}  onChange={this.handleInputChange}/>
+                            $<input name="creditPayment" type="text" placeholder="Enter a value" value={this.state.creditPayment}  onChange={this.handleInputChange}/>
                         </label>                    
 
                         <h3 className="h5 mt-3">Anticipated Home Expenses</h3>
                         <label className="w-100 ">
                             <span className="d-block mb-1">Monthly Property Tax</span>
-                            <input name="propertyTax" type="text" placeholder="Enter a value" value={this.state.propertyTax}  onChange={this.handleInputChange}/>
+                            $<input name="propertyTax" type="text" placeholder="Enter a value" value={this.state.propertyTax}  onChange={this.handleInputChange}/>
                         </label>
                         <label className="w-100">
                             <span className="d-block mb-1">Monthly Heating</span>
@@ -113,7 +104,7 @@ class FinancialInformation extends React.Component{
                         </label>
                         <label className="w-100">
                             <span className="d-block mb-1">Monthly Mortgage Payment</span>
-                            <input name="mortgagePayment" type="text" placeholder="Enter a value" value={this.state.mortgagePayment}  onChange={this.handleInputChange}/>
+                            $<input name="mortgagePayment" type="text" placeholder="Enter a value" value={this.state.mortgagePayment}  onChange={this.handleInputChange}/>
                         </label>
                     </Col>
                     <Col sm="12"><Button className="mt-5 my-sm-4" variant="primary" onClick={this.handleCalculate}>Calculate Debt Ratios</Button></Col>
